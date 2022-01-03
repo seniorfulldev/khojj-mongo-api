@@ -2,10 +2,6 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
-const unless = require('express-unless')
-const auth = require('./helpers/jwt.js');
-// const users = require('../server/controllers/UserController.js')
-const users = require('./controllers/UserController.js')
 const errors = require('./helpers/errorHandler.js')
 
 var corsOptions = {
@@ -15,16 +11,8 @@ app.use(cors(corsOptions)) // Default = CORS-enabled for all origins Access-Cont
 app.use(express.json()) // middleware for parsing application/json
 app.use(express.urlencoded({ extended: false })) // for parsing application/x-www-form-urlencoded
 
-// middleware for authenticating token submitted with requests
-auth.authenticateToken.unless = unless
-app.use(auth.authenticateToken.unless({
-    path: [
-        { url: '/api/auth/login', methods: ['POST']},
-        { url: '/api/auth/signup', methods: ['POST']}
-    ]
-}))
+require("./routes/auth.routes.js")(app);
 
-app.use('/api/auth', users) // middleware for listening to routes
 app.use(errors.errorHandler); // middleware for error responses
 
 // MongoDB connection, success and error event responses
