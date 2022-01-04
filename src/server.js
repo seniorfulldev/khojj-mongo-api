@@ -12,6 +12,7 @@ app.use(express.json()) // middleware for parsing application/json
 app.use(express.urlencoded({ extended: false })) // for parsing application/x-www-form-urlencoded
 
 require("./routes/auth.routes.js")(app);
+require("./routes/user.routes.js")(app);
 
 app.use(errors.errorHandler); // middleware for error responses
 

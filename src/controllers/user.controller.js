@@ -1,37 +1,15 @@
-const express = require("express");
-const router = express.Router();
-const bcrypt = require("bcryptjs");
-const userServices = require("../services/UserServices.js");
+exports.allAccess = (req, res) => {
+  res.status(200).send("To start using the service please read the Documentation and implement our easy to use Leads emails and Crawling emails in your application to get email addresses from various company domains. Don't forget that the first x requests of your account are free of charge. If you have any problems or questions, you can reach us directly through the support page.");
+};
 
-router.post("/signup", (req, res, next) => {
-  const { password } = req.body;
-  console.log("password", password);
-  const salt = bcrypt.genSaltSync(10);
-  req.body.password = bcrypt.hashSync(password, salt);
+exports.userBoard = (req, res) => {
+  res.status(200).send("User Content.");
+};
 
-  userServices
-    .register(req.body)
-    .then(res.json({ success: true, message: "User registered successfully!" }))
-    .catch((err) => next(err));
-});
+exports.adminBoard = (req, res) => {
+  res.status(200).send("Admin Content.");
+};
 
-router.post("/login", (req, res, next) => {
-  const { username, password } = req.body;
-  userServices
-    .login({ username, password })
-    .then((user) => {
-      user
-        ? res.json(user)
-        : res.json({ error: "Username or password is incorrect" });
-    })
-    .catch((err) => next(err));
-});
-
-router.get("/:id", (req, res, next) => {
-  userServices
-    .getById(req.params.id)
-    .then((user) => res.json(user))
-    .catch((err) => next(err));
-});
-
-module.exports = router;
+exports.moderatorBoard = (req, res) => {
+  res.status(200).send("Moderator Content.");
+};
