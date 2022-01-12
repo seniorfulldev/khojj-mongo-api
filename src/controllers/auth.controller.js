@@ -12,7 +12,6 @@ exports.signin = (req, res, next) => {
   userServices
     .login({ username, password })
     .then((user) => {
-        console.log('userjson',user)
       user
         ? res.json(user)
         : res.json({ error: "Username or password is incorrect" });

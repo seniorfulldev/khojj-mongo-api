@@ -5,7 +5,7 @@ const cors = require('cors');
 const errors = require('./helpers/errorHandler.js')
 
 var corsOptions = {
-    origin: ["http://localhost:8081", "https://khojj.co", "https://app.khojj.co"],
+    origin: ["http://localhost:8081", "http://localhost:4000", "https://khojj.co", "https://app.khojj.co"],
   };
 app.use(cors(corsOptions)) // Default = CORS-enabled for all origins Access-Control-Allow-Origin: *!
 app.use(express.json()) // middleware for parsing application/json
@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: false })) // for parsing application/x-ww
 
 require("./routes/auth.routes.js")(app);
 require("./routes/user.routes.js")(app);
+require("./routes/domain.routes")(app);
 
 app.use(errors.errorHandler); // middleware for error responses
 
