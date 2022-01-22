@@ -14,7 +14,6 @@ const emailvalidate = async (list) => {
         validMail.substr(-1) === "."
           ? validMail.substr(0, validMail.length - 1).toLocaleLowerCase()
           : validMail.toLocaleLowerCase();
-      console.log("email", email);
       const { valid, reason, validators } = await isEmailValid(email);
 
       console.log("valid", valid);

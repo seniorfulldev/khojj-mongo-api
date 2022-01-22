@@ -85,7 +85,6 @@ const getEmailFn = function asyncMultiplyBy2(url) {
       resolve({ email: emails, url: url });
     }
     setTimeout(function () {
-      console.log("timeout", url);
       resolve({});
     }, timeout);
     humanoid

@@ -1,9 +1,9 @@
 const User = require("../models/UserModels");
 const bcrypt = require("bcryptjs");
 const config = require("../config/auth.config.js");
+let jwt = require("jsonwebtoken");
 
 async function login({ username, password }) {
-  let jwt = require("jsonwebtoken");
   const user = await User.findOne({ username: username });
   // synchronously compare user entered password with hashed password
   if (user && bcrypt.compareSync(password, user.password)) {
@@ -18,7 +18,15 @@ async function login({ username, password }) {
 
 async function register(params) {
   // instantiate a user modal and save to mongoDB
-  const user = new User(params);
+  const token = jwt.sign({ email: params.email }, config.secret);
+
+  const user = new User({
+    username: params.username,
+    email: params.email,
+    password: bcrypt.hashSync(params.password, 8),
+    confirmationCode: token,
+  });
+  // const user = new User(params);
   await user.save();
 }
 
