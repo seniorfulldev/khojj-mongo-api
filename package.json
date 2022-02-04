@@ -1,32 +1,57 @@
 {
-  "name": "khojj-api",
+  "name": "node-js-jwt-auth",
   "version": "1.0.0",
-  "description": "authentication API",
+  "description": "Node.js Demo for JWT Authentication",
   "main": "server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server.js",
+    "test": "jest"
   },
-  "author": "",
+  "jest": {
+    "reporters": [
+      "default",
+      [
+        "./node_modules/jest-html-reporter",
+        {
+          "pageTitle": "Test Report for khojj api"
+        }
+      ]
+    ],
+    "collectCoverage": true
+  },
+  "keywords": [
+    "node.js",
+    "jwt",
+    "authentication",
+    "express",
+    "mysql"
+  ],
+  "author": "Yilong Piao",
   "license": "ISC",
   "dependencies": {
-    "@sendgrid/mail": "^7.6.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cluster": "^0.7.7",
     "cors": "^2.8.5",
-    "deep-email-validator": "^0.1.21",
-    "dns": "^0.2.2",
+    "deep-email-validator": "^0.1.18",
     "dotenv": "^10.0.0",
-    "express": "^4.17.2",
-    "express-unless": "^0.5.0",
+    "express": "^4.17.1",
     "humanoid-js": "^1.0.1",
     "jsonwebtoken": "^8.5.1",
     "memory-cache": "^0.2.0",
-    "mongodb": "^3.6.9",
-    "mongoose": "^5.13.4",
-    "node-gyp": "^8.4.1",
-    "nodemailer": "^6.7.2",
-    "request": "^2.88.2"
+    "mongodb": "^4.2.2",
+    "mysql2": "^2.1.0",
+    "request": "^2.88.2",
+    "sequelize": "^5.21.3"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.16.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^27.3.1",
+    "jest-html-reporter": "^3.4.1",
+    "nodemon": "^2.0.15",
+    "superagent": "^6.1.0",
+    "supertest": "^6.1.6"
   }
 }

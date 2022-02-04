@@ -12,13 +12,11 @@ module.exports = function (app) {
 
   app.post("/api/domain/leads-email", controller.leadsEamil);
 
-  app.post("/api/domain/validate", controller.validate);
-
   app.post("/api/domain/crawl-email", controller.crawlEamil);
 
-  app.post(
-    "/api/domain/crawl-email",
-    [authJwt.verifyToken],
-    controller.crawlEamil
-  );
+  // app.post(
+  //   "/api/domain/crawl-email",
+  //   [authJwt.verifyToken],
+  //   controller.crawlEamil
+  // );
 };

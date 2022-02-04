@@ -1,18 +1,15 @@
 const request = require("request");
-const services = require("./../services/DomainService");
+const services = require("./../helpers/Service");
 const validate = require("./../services/validate");
-const dns = require("dns");
 const Humanoid = require("humanoid-js");
 const cache = require("memory-cache");
-const dotenv = require("dotenv");
-dotenv.config();
 const SCRAP_API_URL = process.env.SCRAP_API_URL;
 const timeout = process.env.TIMEOUT || 42000;
 const perChunc = process.env.PERCHUNC || 50;
 const humanoid = new Humanoid((autoBypass = false));
 const SCRAP_API_KEY = process.env.SCRAP_API_KEY;
 let memCache = new cache.Cache();
-const duration = process.env.CACHE_PERIOD || 3600 * 24;
+const duration = process.env.CACHE_PERIOD || 3600*24*30;
 exports.leadsEamil = async (req, res) => {
   try {
     const inputUrl = req.body.domain;
@@ -70,6 +67,7 @@ const getEmailList = (urlList) => {
     const actions = urlList.map(getEmailFn);
     let results = Promise.all(actions);
     results.then((data) => {
+      // validate.emailvalidate(data);
       const result = filterEmails(data);
       resolve(result);
     });
@@ -84,6 +82,7 @@ const getEmailFn = function asyncMultiplyBy2(url) {
       resolve({ email: emails, url: url });
     }
     setTimeout(function () {
+      console.log("timeout", url);
       resolve({});
     }, timeout);
     humanoid
@@ -134,7 +133,7 @@ const filterEmails = (list) => {
             emailElements.url.includes("#") > 0
               ? emailElements.url.substr(0, emailElements.url.indexOf("#"))
               : emailElements.url;
-          mailArray.push({ email: email, url: url, validate: "Valid", company: email.split("@")[1].split(".")[0], name: email.split("@")[0] });
+          mailArray.push({ email: email, url: url });
         }
       });
     });
@@ -142,10 +141,4 @@ const filterEmails = (list) => {
     console.error("error7", error);
   }
   return mailArray;
-};
-
-exports.validate = async (req, res) => {
-  const email = req.body.email;
-  const result = await validate.mxValidate(email);
-  res.status(200).send({ email, result });
 };
