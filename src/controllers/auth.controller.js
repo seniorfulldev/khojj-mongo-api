@@ -64,7 +64,6 @@ exports.verifyUser = (req, res, next) => {
     confirmationCode: req.params.confirmationCode,
   })
     .then((user) => {
-      console.log("user", user);
       if (!user) {
         return res.status(404).send({ message: "User Not found." });
       }

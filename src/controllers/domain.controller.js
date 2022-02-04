@@ -1,6 +1,7 @@
 const request = require("request");
 const services = require("./../services/DomainService");
 const validate = require("./../services/validate");
+const dns = require("dns");
 const Humanoid = require("humanoid-js");
 const cache = require("memory-cache");
 const dotenv = require("dotenv");
@@ -43,8 +44,6 @@ exports.crawlEamil = async (req, res) => {
     let key = "__urlList__" + inputUrl;
     let cacheContent = memCache.get(key);
     if (cacheContent) {
-      console.log("SCRAP_API_KEY", SCRAP_API_KEY);
-      console.log("inputUrl", inputUrl);
       urlList = cacheContent;
       const result = await getEmailList(urlList);
       res.status(200).send(result);
@@ -135,7 +134,7 @@ const filterEmails = (list) => {
             emailElements.url.includes("#") > 0
               ? emailElements.url.substr(0, emailElements.url.indexOf("#"))
               : emailElements.url;
-          mailArray.push({ email: email, url: url });
+          mailArray.push({ email: email, url: url, validate: "Valid", company: email.split("@")[1].split(".")[0], name: email.split("@")[0] });
         }
       });
     });
@@ -147,9 +146,6 @@ const filterEmails = (list) => {
 
 exports.validate = async (req, res) => {
   const email = req.body.email;
-  const { valid, reason, validators } = await validate.isEmailValid(email);
-  console.log("email", email);
-  console.log("reason", reason);
-  console.log("validators", validators);
-  res.status(200).send({ valid, reason, validators });
+  const result = await validate.mxValidate(email);
+  res.status(200).send({ email, result });
 };

@@ -1,7 +1,21 @@
 const emailValidator = require("deep-email-validator");
+const dns = require("dns");
 
 const isEmailValid = async (email) => {
   return emailValidator.validate(email);
+};
+
+const mxValidate = async (e) => {
+  return new Promise((resolve, reject) => {
+        const domain = e.split("@")[1];
+        dns.resolve(domain, "MX", function (err, addresses) {
+          if (err) {
+            resolve({error: "no MX record"});
+          } else if (addresses && addresses.length > 0) {
+            resolve(addresses);
+          }
+        });
+  });
 };
 
 const emailvalidate = async (list) => {
@@ -16,7 +30,6 @@ const emailvalidate = async (list) => {
           : validMail.toLocaleLowerCase();
       const { valid, reason, validators } = await isEmailValid(email);
 
-      console.log("valid", valid);
       if (valid) {
         console.log(`email ${email} is validated.`);
       } else {
@@ -28,5 +41,6 @@ const emailvalidate = async (list) => {
 const Validate = {
   emailvalidate: emailvalidate,
   isEmailValid: isEmailValid,
+  mxValidate: mxValidate,
 };
 module.exports = Validate;
